@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Reserve a Table — Maison Agra</title>
+<meta name="description" content="Reserve a table at Maison Agra using a client-side mailto form that opens your default mail app." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f5f1ea;
+    --bg-2:#ebe5db;
+    --paper:rgba(255,252,246,.72);
+    --ink:#0a0a0a;
+    --muted:#6b6760;
+    --line:#d8d2c7;
+    --serif:'Cormorant Garamond', Georgia, serif;
+    --sans:'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    min-height:100vh;font-family:var(--sans);background:var(--bg);color:var(--ink);
+    font-weight:300;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+    background-image:
+      radial-gradient(circle at 12% 18%, rgba(10,10,10,.08) 0 1px, transparent 2px),
+      radial-gradient(circle at 82% 12%, rgba(196,116,65,.18), transparent 28%),
+      radial-gradient(circle at 18% 82%, rgba(74,94,78,.14), transparent 30%),
+      linear-gradient(135deg, var(--bg), var(--bg-2));
+    background-size:24px 24px, 900px 900px, 850px 850px, auto;
+    background-attachment:fixed;
+  }
+  body::before{
+    content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;
+    background:
+      linear-gradient(90deg, rgba(10,10,10,.035) 1px, transparent 1px),
+      linear-gradient(rgba(10,10,10,.03) 1px, transparent 1px);
+    background-size:64px 64px;
+    mask-image:linear-gradient(to bottom, rgba(0,0,0,.75), rgba(0,0,0,.2));
+  }
+  ::selection{background:var(--ink);color:var(--bg)}
+  nav{position:sticky;top:0;z-index:50;background:rgba(245,241,234,.86);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--line);padding:18px 40px;display:flex;align-items:center;justify-content:space-between;gap:22px}
+  .logo{font-family:var(--serif);font-size:1.5rem;font-weight:500;letter-spacing:.5px;color:var(--ink);text-decoration:none;white-space:nowrap}.logo em{font-style:italic;font-weight:400}
+  .nav-links{display:flex;gap:24px;flex-wrap:wrap;justify-content:flex-end}.nav-links a{color:var(--ink);text-decoration:none;font-size:.78rem;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;position:relative;padding:4px 0}.nav-links a::after{content:'';position:absolute;left:0;bottom:0;width:0;height:1px;background:var(--ink);transition:width .35s ease}.nav-links a:hover::after,.nav-links a.active::after{width:100%}
+  main{min-height:calc(100vh - 168px)}
+  .hero{min-height:78vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:72px 24px 92px;position:relative}.eyebrow{font-size:.72rem;letter-spacing:4px;text-transform:uppercase;color:var(--muted);margin-bottom:28px}.hero h1,.page-hero h1{font-family:var(--serif);font-size:clamp(3rem,9vw,7rem);font-weight:300;line-height:1;max-width:940px}.hero h1 em,.page-hero h1 em,.sec-head h2 em{font-style:italic;font-weight:400}.lede{margin-top:30px;max-width:560px;color:var(--muted);font-size:1.02rem}.hero-ctas{margin-top:40px;display:flex;gap:14px;flex-wrap:wrap;justify-content:center}.btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:14px 28px;font-family:var(--sans);font-size:.74rem;font-weight:600;letter-spacing:2.4px;text-transform:uppercase;text-decoration:none;cursor:pointer;transition:.3s;border:1px solid var(--ink)}.btn-dark{background:var(--ink);color:var(--bg)}.btn-dark:hover{background:transparent;color:var(--ink)}.btn-light{background:transparent;color:var(--ink)}.btn-light:hover{background:var(--ink);color:var(--bg)}
+  section,.page-wrap{padding:100px 40px;max-width:1240px;margin:0 auto}.page-hero{padding:88px 40px 42px;max-width:1240px;margin:0 auto}.page-hero p{max-width:680px;color:var(--muted);margin-top:24px;font-size:1.06rem}.sec-head{display:flex;align-items:flex-end;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:20px;margin-bottom:54px;gap:30px;flex-wrap:wrap}.sec-head h2{font-family:var(--serif);font-weight:300;font-size:clamp(2rem,4vw,3rem)}.meta{font-size:.72rem;letter-spacing:3px;text-transform:uppercase;color:var(--muted)}
+  .panel{background:var(--paper);border:1px solid var(--line);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}.about-grid,.visit-grid,.contact-grid,.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start}.about-text p,.visit-card p,.form-intro p,.contact-card p{color:var(--muted);margin-bottom:18px;font-size:1.02rem}.about-text p:first-child::first-letter{font-family:var(--serif);font-size:3.4rem;float:left;line-height:.9;padding:6px 10px 0 0;color:var(--ink);font-weight:400}.about-stats{display:grid;grid-template-columns:repeat(2,1fr);border-top:1px solid var(--line);border-left:1px solid var(--line)}.stat{padding:32px 24px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);background:rgba(255,252,246,.45)}.stat .num{font-family:var(--serif);font-size:2.6rem;font-weight:300}.stat .lbl{font-size:.7rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin-top:6px}
+  .dishes{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:0;border-top:1px solid var(--line);border-left:1px solid var(--line);background:rgba(255,252,246,.48)}.dish{padding:32px 28px;border-bottom:1px solid var(--line);border-right:1px solid var(--line);cursor:pointer;transition:background .35s ease, transform .35s ease;min-height:205px;display:flex;flex-direction:column;justify-content:space-between}.dish:hover{background:rgba(235,229,219,.84);transform:translateY(-3px)}.dish-num{font-family:var(--serif);font-style:italic;font-size:.95rem;color:var(--muted)}.dish h3{font-family:var(--serif);font-weight:400;font-size:1.6rem;margin:18px 0 6px}.cat{font-size:.7rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted)}.dish-meta{display:flex;justify-content:space-between;align-items:baseline;gap:18px;margin-top:24px}.price{font-family:var(--serif);font-size:1.3rem;font-weight:400}.rating{font-size:.78rem;letter-spacing:1.5px;color:var(--muted)}.rating b{color:var(--ink);font-weight:600}
+  .visit-card,.contact-card,.form-intro{padding:34px}.visit-card h3,.contact-card h3,.form-intro h3{font-family:var(--serif);font-weight:400;font-size:1.7rem;margin-bottom:20px}.hours{list-style:none}.hours li{display:flex;justify-content:space-between;gap:20px;padding:14px 0;border-bottom:1px solid var(--line);font-size:.95rem}.hours li span:first-child{letter-spacing:1px;text-transform:uppercase;font-size:.78rem;color:var(--muted)}a.inline{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--ink);padding-bottom:1px}.map-wrap{border:1px solid var(--line);overflow:hidden;background:#fff;margin-top:42px}.map-wrap iframe{width:100%;height:480px;border:0;display:block;filter:grayscale(.55) contrast(.96)}
+  form{display:flex;flex-direction:column;padding:34px;background:rgba(255,252,246,.52);border:1px solid var(--line)}.form-row{display:grid;grid-template-columns:1fr 1fr;gap:20px}.field{display:flex;flex-direction:column;margin-top:24px}label{font-size:.7rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}input,select,textarea{width:100%;padding:10px 0;border:none;border-bottom:1px solid var(--line);font-family:inherit;font-size:1rem;background:transparent;color:var(--ink);transition:border-color .3s}input:focus,select:focus,textarea:focus{outline:none;border-bottom-color:var(--ink)}textarea{min-height:90px;resize:vertical;padding-top:8px}select{appearance:none;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='none' stroke='%230a0a0a' d='M1 1l4 4 4-4'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 4px center}.send-btn{margin-top:40px;padding:18px 32px;background:var(--ink);color:var(--bg);border:1px solid var(--ink);font-family:var(--sans);font-size:.78rem;font-weight:600;letter-spacing:2.4px;text-transform:uppercase;cursor:pointer;transition:.3s;align-self:flex-start}.send-btn:hover{background:transparent;color:var(--ink)}
+  .contact-list{list-style:none;margin-top:16px}.contact-list li{padding:14px 0;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:18px;color:var(--muted)}.contact-list b{color:var(--ink);font-weight:500}.note{font-size:.75rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:14px}.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);background:var(--ink);color:var(--bg);padding:12px 18px;font-size:.75rem;letter-spacing:1.6px;text-transform:uppercase;opacity:0;pointer-events:none;transition:.3s;z-index:80}.toast.show{opacity:1;transform:translate(-50%,0)}footer{border-top:1px solid var(--line);padding:46px 40px 30px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px;font-size:.78rem;letter-spacing:1.5px;color:var(--muted);background:rgba(245,241,234,.66)}footer .brand{font-family:var(--serif);font-size:1.1rem;color:var(--ink)}.reveal{opacity:0;transform:translateY(24px);transition:opacity .8s ease, transform .8s ease}.reveal.show{opacity:1;transform:none}
+  @media(max-width:840px){nav{align-items:flex-start;padding:16px 22px}.nav-links{gap:14px}.nav-links a{font-size:.68rem}.about-grid,.visit-grid,.contact-grid,.form-grid{grid-template-columns:1fr;gap:30px}section,.page-wrap{padding:76px 22px}.page-hero{padding:68px 22px 20px}.hero{min-height:72vh}.form-row{grid-template-columns:1fr}.dish-meta,.hours li,.contact-list li{align-items:flex-start;flex-direction:column;gap:4px}.map-wrap iframe{height:360px}}
+</style>
+</head>
+<body>
+<nav>
+  <a class="logo" href="index.html">Maison <em>Agra</em></a>
+  <div class="nav-links"><a href="index.html" class="">Home</a><a href="about.html" class="">About</a><a href="menu.html" class="">Menu</a><a href="visit.html" class="">Visit</a><a href="reserve.html" class="active">Reserve</a><a href="contact.html" class="">Contact</a></div>
+</nav>
+<main>
+<div class="page-hero"><div class="eyebrow">Reserve</div><h1>Book a table through <em>your mail app</em>.</h1><p>No server is used. The form simply prepares an email with your details.</p></div>
+<section><div class="form-grid">
+  <div class="form-intro panel reveal">
+    <h3>A quiet note, sent to us.</h3>
+    <p>Tell us when, and for how many. When you press send, your default mail app opens with the request already written.</p>
+    <div class="note">No server · No database · Just email.</div>
+  </div>
+  <form id="reserveForm" onsubmit="return sendMail(event)" class="reveal">
+    <div class="form-row">
+      <div class="field"><label for="name">Name</label><input type="text" id="name" required placeholder="Aarohi Sharma"></div>
+      <div class="field"><label for="email">Email</label><input type="email" id="email" required placeholder="you@email.com"></div>
+    </div>
+    <div class="form-row">
+      <div class="field"><label for="phone">Phone</label><input type="tel" id="phone" required placeholder="+91 90000 00000"></div>
+      <div class="field"><label for="occasion">Occasion</label><select id="occasion"><option value="">— Optional —</option><option>Casual dining</option><option>Anniversary</option><option>Birthday</option><option>Business</option><option>Other</option></select></div>
+    </div>
+    <div class="form-row">
+      <div class="field"><label for="date">Date</label><input type="date" id="date" required></div>
+      <div class="field"><label for="time">Time</label><input type="time" id="time" required></div>
+    </div>
+    <div class="form-row">
+      <div class="field"><label for="guests">Guests</label><input type="number" id="guests" min="1" max="20" value="2" required></div>
+      <div class="field"><label for="dish">Dish optional</label><input type="text" id="dish" placeholder="Alfredo Pasta"></div>
+    </div>
+    <div class="field"><label for="notes">Notes</label><textarea id="notes" placeholder="Window seat, please."></textarea></div>
+    <button type="submit" class="send-btn">Send via Mail →</button>
+  </form>
+</div>
+<div class="toast" id="toast">Opening your mail app</div></section>
+</main>
+<footer>
+  <div class="brand">Maison Agra</div>
+  <div>Taj Ganj · Agra · India</div>
+  <div>© 2026 Maison Agra. All rights reserved.</div>
+</footer>
+<script>
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach((entry)=>{ if(entry.isIntersecting){ entry.target.classList.add('show'); io.unobserve(entry.target); } });
+  },{threshold:.12});
+  document.querySelectorAll('.reveal').forEach((el)=>io.observe(el));
+  function setDish(name){
+    sessionStorage.setItem('selectedDish', name);
+    window.location.href = 'reserve.html';
+  }
+  function hydrateDish(){
+    const field = document.getElementById('dish');
+    const selected = sessionStorage.getItem('selectedDish');
+    if(field && selected){ field.value = selected; sessionStorage.removeItem('selectedDish'); }
+    const date = document.getElementById('date');
+    if(date){ date.min = new Date().toISOString().split('T')[0]; }
+  }
+  function showToast(message){
+    const toast = document.getElementById('toast');
+    if(!toast) return;
+    toast.textContent = message;
+    toast.classList.add('show');
+    setTimeout(()=>toast.classList.remove('show'), 2600);
+  }
+  function sendMail(e){
+    e.preventDefault();
+    const v = id => (document.getElementById(id)?.value || '').trim();
+    const subject = `Reservation Request — Maison Agra (${v('date')} ${v('time')})`;
+    const body = `Hello Maison Agra,
+
+I'd like to reserve a table.
+
+Name: ${v('name')}
+Email: ${v('email')}
+Phone: ${v('phone')}
+Occasion: ${v('occasion') || '—'}
+Date: ${v('date')}
+Time: ${v('time')}
+Guests: ${v('guests')}
+Dish: ${v('dish') || '—'}
+
+Notes:
+${v('notes') || '—'}
+
+Thank you,
+${v('name')}`;
+    window.location.href = `mailto:reservations@maisonagra.example?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    showToast('Opening your mail app');
+    return false;
+  }
+  hydrateDish();
+</script>
+</body>
+</html>
